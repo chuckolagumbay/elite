@@ -33,12 +33,12 @@ Route::prefix('crews')->middleware('auth')->group(function () {
 });
 
 Route::prefix('document')->middleware('auth')->group(function () {
-    Route::get('/view/{id}', [App\Http\Controllers\DocumentsController::class, 'show'])->name('documents.view');
+    Route::get('/view/{document}', [App\Http\Controllers\DocumentsController::class, 'show'])->name('documents.view');
 
     Route::get('/', [App\Http\Controllers\DocumentsController::class, 'index'])->name('documents');
     Route::get('/create/{crew}', [App\Http\Controllers\DocumentsController::class, 'create'])->name('documents.create');
     Route::post('/create/{crew}', [App\Http\Controllers\DocumentsController::class, 'store'])->name('documents.store');
-    Route::get('/edit/{id}', [App\Http\Controllers\DocumentsController::class, 'edit'])->name('documents.edit');
-    Route::post('/edit/{id}', [App\Http\Controllers\DocumentsController::class, 'update'])->name('documents.update');
-    Route::get('/delete/{id}', [App\Http\Controllers\DocumentsController::class, 'destroy'])->name('documents.delete');
+    Route::get('/edit/{document}', [App\Http\Controllers\DocumentsController::class, 'edit'])->name('documents.edit');
+    Route::post('/edit/{document}', [App\Http\Controllers\DocumentsController::class, 'update'])->name('documents.update');
+    Route::get('/delete/{document}', [App\Http\Controllers\DocumentsController::class, 'destroy'])->name('documents.delete');
 });

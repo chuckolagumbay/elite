@@ -103,10 +103,6 @@ class CrewsController extends Controller
      */
     public function destroy($id)
     {
-        //
-//        dd('Destroying');
-
-//        dd($id);
         Document::where('crew_id', $id)->delete();
         Crew::find($id)->delete();
 

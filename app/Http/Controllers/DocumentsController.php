@@ -49,9 +49,9 @@ class DocumentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Document $document)
     {
-        //
+        return view('documents.show', compact('document'));
     }
 
     /**
@@ -60,9 +60,9 @@ class DocumentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Document $document)
     {
-        //
+        return view('documents.edit', compact('document'));
     }
 
     /**
@@ -72,9 +72,14 @@ class DocumentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Document $document)
     {
-        //
+        try {
+            $document->update($request->all());
+            return redirect()->route('crews.view', [$document->crew->id])->with('info', 'Document has been updated.');
+        } catch (\Exception $e) {
+            return redirect()->route('documents.edit', [$document->crew->id])->with('info', 'Error updating document.');
+        }
     }
 
     /**
@@ -83,8 +88,11 @@ class DocumentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Document $document)
     {
-        //
+        $crew_id = $document->crew_id;
+        $document->delete();
+
+        return redirect()->route('crews.view', [$crew_id])->with('info', 'Document has been deleted.');
     }
 }

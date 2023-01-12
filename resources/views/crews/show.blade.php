@@ -52,9 +52,9 @@
                                             <td>{{ $document->name }}</td>
                                             <td>{{ $document->document_number }}</td>
                                             <td class="text-center">
-{{--                                                <a href="{{ route('crews.view', [$crew->id]) }}">view</a> |--}}
-{{--                                                <a href="{{ route('crews') }}">edit</a> |--}}
-{{--                                                <a href="{{ route('crews.delete', [$crew->id]) }}" class="text-danger">delete</a>--}}
+                                                <a href="{{ route('documents.view', [$document->id]) }}">view</a> |
+                                                <a href="{{ route('documents.edit', [$document->id]) }}">edit</a> |
+                                                <a href="{{ route('documents.delete', [$document->id]) }}" class="text-danger">delete</a>
                                             </td>
                                         </tr>
                                     @endforeach
