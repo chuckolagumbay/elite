@@ -3,17 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CrewRequest;
 use App\Models\Crew;
 use App\Models\Document;
 use Illuminate\Http\Request;
 
 class CrewsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
         $crews = Crew::with(['document'])->get();
@@ -24,16 +20,10 @@ class CrewsController extends Controller
         ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(CrewRequest $request)
     {
         try {
-            Crew::create($request->all());
+            Crew::create($request->validated());
 
             return response()->json([
                 'success' => true,
@@ -48,15 +38,9 @@ class CrewsController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $crew = Crew::with(['document'])->where('id', $id)->get();
+        $crew = Crew::with(['document'])->where('id', $id)->first();
 
         if (! $crew) {
             return response()->json([
@@ -71,25 +55,9 @@ class CrewsController extends Controller
         ], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(CrewRequest $request, Crew $crew)
     {
-        $crew = Crew::find($id);
-
-        if (! $crew) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Crew not found'
-            ], 404);
-        }
-
-        $crew->update($request->all());
+        $crew->update($request->validated());
 
         return response()->json([
             'success' => true,
@@ -97,12 +65,6 @@ class CrewsController extends Controller
         ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $crew = Crew::find($id);

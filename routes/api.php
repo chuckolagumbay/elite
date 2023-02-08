@@ -28,10 +28,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Route::post('register', [PassportAuthController::class, 'register']);
 Route::post('login', [PassportAuthController::class, 'login']);
 
+Route::middleware('auth:api')->group(function () {
+    Route::get('logout', [PassportAuthController::class, 'logout']);
+});
+
 Route::middleware('auth:api')->prefix('crews')->group(function () {
     Route::get('/', [CrewsController::class, 'index'])->name('crews');
     Route::post('/create', [CrewsController::class, 'store'])->name('crews.store');
     Route::get('/view/{id}', [CrewsController::class, 'show'])->name('crews.view');
-    Route::post('/edit/{id}', [CrewsController::class, 'update'])->name('crews.update');
+    Route::post('/edit/{crew}', [CrewsController::class, 'update'])->name('crews.update');
     Route::get('/delete/{id}', [CrewsController::class, 'destroy'])->name('crews.delete');
 });
