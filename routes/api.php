@@ -28,6 +28,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Route::post('register', [PassportAuthController::class, 'register']);
 Route::post('login', [PassportAuthController::class, 'login']);
 
+Route::middleware('auth:api')->group(function () {
+    Route::get('logout', [PassportAuthController::class, 'logout']);
+});
+
 Route::middleware('auth:api')->prefix('crews')->group(function () {
     Route::get('/', [CrewsController::class, 'index'])->name('crews');
     Route::post('/create', [CrewsController::class, 'store'])->name('crews.store');

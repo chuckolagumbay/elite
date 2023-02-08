@@ -18,18 +18,18 @@ class PassportAuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8',
         ]);
- 
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
-       
+
         $token = $user->createToken('LaravelAuthApp')->accessToken;
- 
+
         return response()->json(['token' => $token], 200);
     }
- 
+
     /**
      * Login
      */
@@ -39,12 +39,26 @@ class PassportAuthController extends Controller
             'email' => $request->email,
             'password' => $request->password
         ];
- 
+
         if (auth()->attempt($data)) {
-            $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
-            return response()->json(['token' => $token], 200);
+            $user = auth()->user();
+            $token = $user->createToken('LaravelAuthApp')->accessToken;
+            return response()->json(['token' => $token, 'user' => $user], 200);
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
         }
-    }   
+    }
+
+    /**
+     * Login
+     */
+    public function logout(Request $request)
+    {
+        auth()->user()->token()->revoke();
+
+        return response()->json([
+            'success' => true,
+            'data' => 'Successfully logged out.'
+        ], 200);
+    }
 }
