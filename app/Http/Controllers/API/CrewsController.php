@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CrewRequest;
 use App\Models\Crew;
 use App\Models\Document;
 use Illuminate\Http\Request;
@@ -19,10 +20,10 @@ class CrewsController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
+    public function store(CrewRequest $request)
     {
         try {
-            Crew::create($request->all());
+            Crew::create($request->validated());
 
             return response()->json([
                 'success' => true,
@@ -54,23 +55,9 @@ class CrewsController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, $id)
+    public function update(CrewRequest $request, Crew $crew)
     {
-//        return response()->json([
-//            'success' => true,
-//            'data' => $request->all()
-//        ], 200);
-
-        $crew = Crew::find($id);
-
-        if (! $crew) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Crew not found'
-            ], 404);
-        }
-
-        $crew->update($request->all());
+        $crew->update($request->validated());
 
         return response()->json([
             'success' => true,
